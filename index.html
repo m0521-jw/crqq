@@ -99,8 +99,8 @@
             <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i class="fa fa-info-circle text-yellow-500 text-2xl"></i>
             </div>
-            <h3 class="text-xl font-bold text-neutral mb-2">您已提交过评价</h3>
-            <p class="text-gray-600">每个用户只能提交一次评价并获取资源，感谢您的参与！</p>
+            <h3 class="text-xl font-bold text-neutral mb-2">欢迎再次提交评价</h3>
+            <p class="text-gray-600">您可以随时提交新的评价并获取资源，感谢您的持续支持！</p>
         </div>
         
         <!-- 主要内容区 -->
@@ -564,22 +564,37 @@
                     resourceArea.classList.remove('opacity-0', 'pointer-events-none');
                     resourceArea.querySelector('div').classList.remove('translate-y-10');
                 }, 300);
-                
-                // 标记为已提交（实际应用中应该发送到服务器）
-                localStorage.setItem('submittedEvaluation', 'true');
             });
             
             // 关闭资源页面
             closeResourceButton.addEventListener('click', function() {
                 resourceArea.classList.add('opacity-0', 'pointer-events-none');
                 resourceArea.querySelector('div').classList.add('translate-y-10');
+                
+                // 返回首页并清除上传的信息
+                setTimeout(() => {
+                    // 重置表单数据
+                    formData.image = null;
+                    formData.phone = '';
+                    
+                    // 清除文件上传控件
+                    screenshotUpload.value = '';
+                    
+                    // 隐藏预览图像
+                    previewContainer.classList.add('hidden');
+                    previewImage.src = '';
+                    
+                    // 清空手机号输入框
+                    phoneNumber.value = '';
+                    
+                    // 隐藏错误提示
+                    hideError(uploadError);
+                    hideError(phoneError);
+                    
+                    // 重置表单验证状态
+                    evaluationForm.reset();
+                }, 300);
             });
-            
-            // 检查是否已提交
-            if (localStorage.getItem('submittedEvaluation') === 'true') {
-                document.getElementById('mainContent').classList.add('hidden');
-                document.getElementById('submittedNotice').classList.remove('hidden');
-            }
         });
     </script>
 </body>
